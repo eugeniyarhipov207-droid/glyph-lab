@@ -1,0 +1,693 @@
+Compiled from "GlyphManager.java"
+public class com.nothing.ketchum.GlyphManager {
+  private static final java.lang.String TAG;
+
+  private static final int GLYPH_A;
+
+  private static final int GLYPH_B;
+
+  private static final int GLYPH_C;
+
+  private static final int GLYPH_D;
+
+  private static final int DEFAULT_MAX_LIGHT;
+
+  private static final int DEFAULT_MIN_LIGHT;
+
+  private static final int NO_LIGHT;
+
+  private android.content.Context mContext;
+
+  private com.nothing.ketchum.GlyphManager$RemoteServiceConnection mConnection;
+
+  private com.nothing.thirdparty.IGlyphService mService;
+
+  private com.nothing.ketchum.GlyphManager$Callback mCallback;
+
+  private boolean mHasAuthorized;
+
+  private java.util.concurrent.ExecutorService mExecutor;
+
+  private boolean mFrameTask;
+
+  private java.util.concurrent.Future mTask;
+
+  private java.lang.String mDevice;
+
+  private static com.nothing.ketchum.GlyphManager mInstance;
+
+  public static com.nothing.ketchum.GlyphManager getInstance(android.content.Context);
+    Code:
+       0: getstatic     #23                 // Field mInstance:Lcom/nothing/ketchum/GlyphManager;
+       3: ifnonnull     17
+       6: new           #2                  // class com/nothing/ketchum/GlyphManager
+       9: dup
+      10: aload_0
+      11: invokespecial #27                 // Method "<init>":(Landroid/content/Context;)V
+      14: putstatic     #23                 // Field mInstance:Lcom/nothing/ketchum/GlyphManager;
+      17: getstatic     #23                 // Field mInstance:Lcom/nothing/ketchum/GlyphManager;
+      20: areturn
+
+  private com.nothing.ketchum.GlyphManager(android.content.Context);
+    Code:
+       0: aload_0
+       1: invokespecial #31                 // Method java/lang/Object."<init>":()V
+       4: aload_0
+       5: new           #36                 // class com/nothing/ketchum/GlyphManager$RemoteServiceConnection
+       8: dup
+       9: aload_0
+      10: aconst_null
+      11: invokespecial #38                 // Method com/nothing/ketchum/GlyphManager$RemoteServiceConnection."<init>":(Lcom/nothing/ketchum/GlyphManager;Lcom/nothing/ketchum/GlyphManager$1;)V
+      14: putfield      #41                 // Field mConnection:Lcom/nothing/ketchum/GlyphManager$RemoteServiceConnection;
+      17: aload_0
+      18: iconst_0
+      19: putfield      #45                 // Field mHasAuthorized:Z
+      22: aload_0
+      23: iconst_0
+      24: putfield      #49                 // Field mFrameTask:Z
+      27: aload_0
+      28: aconst_null
+      29: putfield      #52                 // Field mTask:Ljava/util/concurrent/Future;
+      32: aload_0
+      33: aconst_null
+      34: putfield      #15                 // Field mDevice:Ljava/lang/String;
+      37: aload_0
+      38: aload_1
+      39: putfield      #56                 // Field mContext:Landroid/content/Context;
+      42: aload_0
+      43: invokestatic  #60                 // Method java/util/concurrent/Executors.newSingleThreadExecutor:()Ljava/util/concurrent/ExecutorService;
+      46: putfield      #66                 // Field mExecutor:Ljava/util/concurrent/ExecutorService;
+      49: return
+
+  public void init(com.nothing.ketchum.GlyphManager$Callback);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: putfield      #1                  // Field mCallback:Lcom/nothing/ketchum/GlyphManager$Callback;
+       5: new           #70                 // class android/content/Intent
+       8: dup
+       9: invokespecial #72                 // Method android/content/Intent."<init>":()V
+      12: astore_2
+      13: aload_2
+      14: ldc           #73                 // String com.nothing.thirdparty
+      16: invokevirtual #75                 // Method android/content/Intent.setPackage:(Ljava/lang/String;)Landroid/content/Intent;
+      19: pop
+      20: aload_2
+      21: ldc           #79                 // String com.nothing.thirdparty.bind_glyphservice
+      23: invokevirtual #81                 // Method android/content/Intent.setAction:(Ljava/lang/String;)Landroid/content/Intent;
+      26: pop
+      27: aload_2
+      28: new           #84                 // class android/content/ComponentName
+      31: dup
+      32: ldc           #73                 // String com.nothing.thirdparty
+      34: ldc           #86                 // String com.nothing.thirdparty.GlyphService
+      36: invokespecial #88                 // Method android/content/ComponentName."<init>":(Ljava/lang/String;Ljava/lang/String;)V
+      39: invokevirtual #91                 // Method android/content/Intent.setComponent:(Landroid/content/ComponentName;)Landroid/content/Intent;
+      42: pop
+      43: aload_0
+      44: getfield      #56                 // Field mContext:Landroid/content/Context;
+      47: aload_2
+      48: aload_0
+      49: getfield      #41                 // Field mConnection:Lcom/nothing/ketchum/GlyphManager$RemoteServiceConnection;
+      52: iconst_1
+      53: invokevirtual #97                 // Method android/content/Context.bindService:(Landroid/content/Intent;Landroid/content/ServiceConnection;I)Z
+      56: pop
+      57: return
+
+  public void unInit();
+    Code:
+       0: aload_0
+       1: getfield      #56                 // Field mContext:Landroid/content/Context;
+       4: aload_0
+       5: getfield      #41                 // Field mConnection:Lcom/nothing/ketchum/GlyphManager$RemoteServiceConnection;
+       8: invokevirtual #103                // Method android/content/Context.unbindService:(Landroid/content/ServiceConnection;)V
+      11: return
+
+  public boolean register();
+    Code:
+       0: aload_0
+       1: getfield      #56                 // Field mContext:Landroid/content/Context;
+       4: invokestatic  #107                // Method com/nothing/ketchum/Common.getAppKey:(Landroid/content/Context;)Ljava/lang/String;
+       7: astore_1
+       8: aload_0
+       9: aload_0
+      10: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+      13: aload_1
+      14: getstatic     #113                // Field android/os/Build.MODEL:Ljava/lang/String;
+      17: invokeinterface #118,  3          // InterfaceMethod com/nothing/thirdparty/IGlyphService.registerSDK:(Ljava/lang/String;Ljava/lang/String;)Z
+      22: putfield      #45                 // Field mHasAuthorized:Z
+      25: aload_0
+      26: getstatic     #113                // Field android/os/Build.MODEL:Ljava/lang/String;
+      29: putfield      #15                 // Field mDevice:Ljava/lang/String;
+      32: goto          61
+      35: astore_1
+      36: ldc           #126                // String GlyphManager
+      38: aload_1
+      39: invokevirtual #128                // Method android/os/RemoteException.getMessage:()Ljava/lang/String;
+      42: invokestatic  #132                // Method android/util/Log.e:(Ljava/lang/String;Ljava/lang/String;)I
+      45: pop
+      46: goto          61
+      49: astore_1
+      50: ldc           #126                // String GlyphManager
+      52: aload_1
+      53: invokevirtual #140                // Method java/lang/Exception.getMessage:()Ljava/lang/String;
+      56: aload_1
+      57: invokestatic  #141                // Method android/util/Log.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+      60: pop
+      61: ldc           #126                // String GlyphManager
+      63: new           #144                // class java/lang/StringBuilder
+      66: dup
+      67: invokespecial #146                // Method java/lang/StringBuilder."<init>":()V
+      70: ldc           #147                // String You are targeting
+      72: invokevirtual #149                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      75: getstatic     #113                // Field android/os/Build.MODEL:Ljava/lang/String;
+      78: invokevirtual #149                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      81: ldc           #153                // String  as your device.
+      83: invokevirtual #149                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      86: invokevirtual #155                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      89: invokestatic  #158                // Method android/util/Log.w:(Ljava/lang/String;Ljava/lang/String;)I
+      92: pop
+      93: aload_0
+      94: getfield      #45                 // Field mHasAuthorized:Z
+      97: ireturn
+    Exception table:
+       from    to  target type
+           0    32    35   Class android/os/RemoteException
+           0    32    49   Class java/lang/Exception
+
+  public boolean register(java.lang.String);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: putfield      #15                 // Field mDevice:Ljava/lang/String;
+       5: aload_0
+       6: getfield      #56                 // Field mContext:Landroid/content/Context;
+       9: invokestatic  #107                // Method com/nothing/ketchum/Common.getAppKey:(Landroid/content/Context;)Ljava/lang/String;
+      12: astore_2
+      13: aload_0
+      14: aload_0
+      15: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+      18: aload_2
+      19: aload_1
+      20: invokeinterface #118,  3          // InterfaceMethod com/nothing/thirdparty/IGlyphService.registerSDK:(Ljava/lang/String;Ljava/lang/String;)Z
+      25: putfield      #45                 // Field mHasAuthorized:Z
+      28: goto          57
+      31: astore_2
+      32: ldc           #126                // String GlyphManager
+      34: aload_2
+      35: invokevirtual #128                // Method android/os/RemoteException.getMessage:()Ljava/lang/String;
+      38: invokestatic  #132                // Method android/util/Log.e:(Ljava/lang/String;Ljava/lang/String;)I
+      41: pop
+      42: goto          57
+      45: astore_2
+      46: ldc           #126                // String GlyphManager
+      48: aload_2
+      49: invokevirtual #140                // Method java/lang/Exception.getMessage:()Ljava/lang/String;
+      52: aload_2
+      53: invokestatic  #141                // Method android/util/Log.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+      56: pop
+      57: ldc           #126                // String GlyphManager
+      59: new           #144                // class java/lang/StringBuilder
+      62: dup
+      63: invokespecial #146                // Method java/lang/StringBuilder."<init>":()V
+      66: ldc           #147                // String You are targeting
+      68: invokevirtual #149                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      71: aload_1
+      72: invokevirtual #149                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      75: ldc           #153                // String  as your device.
+      77: invokevirtual #149                // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      80: invokevirtual #155                // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      83: invokestatic  #158                // Method android/util/Log.w:(Ljava/lang/String;Ljava/lang/String;)I
+      86: pop
+      87: aload_0
+      88: getfield      #45                 // Field mHasAuthorized:Z
+      91: ireturn
+    Exception table:
+       from    to  target type
+           0    28    31   Class android/os/RemoteException
+           0    28    45   Class java/lang/Exception
+
+  public com.nothing.ketchum.GlyphFrame$Builder getGlyphFrameBuilder();
+    Code:
+       0: aload_0
+       1: getfield      #15                 // Field mDevice:Ljava/lang/String;
+       4: ifnonnull     9
+       7: aconst_null
+       8: areturn
+       9: new           #161                // class com/nothing/ketchum/GlyphFrame$Builder
+      12: dup
+      13: aload_0
+      14: getfield      #15                 // Field mDevice:Ljava/lang/String;
+      17: invokespecial #163                // Method com/nothing/ketchum/GlyphFrame$Builder."<init>":(Ljava/lang/String;)V
+      20: areturn
+
+  public void openSession() throws com.nothing.ketchum.GlyphException;
+    Code:
+       0: aload_0
+       1: getfield      #45                 // Field mHasAuthorized:Z
+       4: ifne          16
+       7: ldc           #126                // String GlyphManager
+       9: ldc           #166                // String Non registed
+      11: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      14: pop
+      15: return
+      16: aload_0
+      17: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+      20: ifnonnull     33
+      23: new           #171                // class com/nothing/ketchum/GlyphException
+      26: dup
+      27: ldc           #173                // String Please use it after service connected.
+      29: invokespecial #175                // Method com/nothing/ketchum/GlyphException."<init>":(Ljava/lang/String;)V
+      32: athrow
+      33: aload_0
+      34: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+      37: invokeinterface #176,  1          // InterfaceMethod com/nothing/thirdparty/IGlyphService.openSession:()V
+      42: goto          56
+      45: astore_1
+      46: ldc           #126                // String GlyphManager
+      48: aload_1
+      49: invokevirtual #128                // Method android/os/RemoteException.getMessage:()Ljava/lang/String;
+      52: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      55: pop
+      56: return
+    Exception table:
+       from    to  target type
+          33    42    45   Class android/os/RemoteException
+
+  public void closeSession() throws com.nothing.ketchum.GlyphException;
+    Code:
+       0: aload_0
+       1: getfield      #45                 // Field mHasAuthorized:Z
+       4: ifne          16
+       7: ldc           #126                // String GlyphManager
+       9: ldc           #166                // String Non registed
+      11: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      14: pop
+      15: return
+      16: aload_0
+      17: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+      20: ifnonnull     33
+      23: new           #171                // class com/nothing/ketchum/GlyphException
+      26: dup
+      27: ldc           #173                // String Please use it after service connected.
+      29: invokespecial #175                // Method com/nothing/ketchum/GlyphException."<init>":(Ljava/lang/String;)V
+      32: athrow
+      33: aload_0
+      34: invokespecial #179                // Method stopCurrentTask:()V
+      37: aload_0
+      38: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+      41: invokeinterface #182,  1          // InterfaceMethod com/nothing/thirdparty/IGlyphService.closeSession:()V
+      46: goto          60
+      49: astore_1
+      50: ldc           #126                // String GlyphManager
+      52: aload_1
+      53: invokevirtual #128                // Method android/os/RemoteException.getMessage:()Ljava/lang/String;
+      56: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      59: pop
+      60: return
+    Exception table:
+       from    to  target type
+          33    46    49   Class android/os/RemoteException
+
+  public void setFrameColors(int[]) throws com.nothing.ketchum.GlyphException;
+    Code:
+       0: aload_0
+       1: getfield      #45                 // Field mHasAuthorized:Z
+       4: ifne          16
+       7: ldc           #126                // String GlyphManager
+       9: ldc           #166                // String Non registed
+      11: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      14: pop
+      15: return
+      16: aload_0
+      17: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+      20: ifnonnull     33
+      23: new           #171                // class com/nothing/ketchum/GlyphException
+      26: dup
+      27: ldc           #173                // String Please use it after service connected.
+      29: invokespecial #175                // Method com/nothing/ketchum/GlyphException."<init>":(Ljava/lang/String;)V
+      32: athrow
+      33: aload_0
+      34: invokespecial #179                // Method stopCurrentTask:()V
+      37: aload_0
+      38: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+      41: aload_1
+      42: invokeinterface #185,  2          // InterfaceMethod com/nothing/thirdparty/IGlyphService.setFrameColors:([I)V
+      47: goto          61
+      50: astore_2
+      51: ldc           #126                // String GlyphManager
+      53: aload_2
+      54: invokevirtual #128                // Method android/os/RemoteException.getMessage:()Ljava/lang/String;
+      57: invokestatic  #132                // Method android/util/Log.e:(Ljava/lang/String;Ljava/lang/String;)I
+      60: pop
+      61: return
+    Exception table:
+       from    to  target type
+          33    47    50   Class android/os/RemoteException
+
+  public void turnOff();
+    Code:
+       0: aload_0
+       1: getfield      #45                 // Field mHasAuthorized:Z
+       4: ifne          16
+       7: ldc           #126                // String GlyphManager
+       9: ldc           #166                // String Non registed
+      11: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      14: pop
+      15: return
+      16: aload_0
+      17: invokespecial #179                // Method stopCurrentTask:()V
+      20: new           #189                // class com/nothing/ketchum/GlyphManager$1
+      23: dup
+      24: aload_0
+      25: invokespecial #191                // Method com/nothing/ketchum/GlyphManager$1."<init>":(Lcom/nothing/ketchum/GlyphManager;)V
+      28: astore_1
+      29: aload_0
+      30: aload_1
+      31: invokespecial #194                // Method executeFrame:(Ljava/lang/Runnable;)V
+      34: return
+
+  public void toggle(com.nothing.ketchum.GlyphFrame);
+    Code:
+       0: aload_0
+       1: getfield      #45                 // Field mHasAuthorized:Z
+       4: ifne          16
+       7: ldc           #126                // String GlyphManager
+       9: ldc           #166                // String Non registed
+      11: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      14: pop
+      15: return
+      16: aload_0
+      17: invokespecial #179                // Method stopCurrentTask:()V
+      20: new           #198                // class com/nothing/ketchum/GlyphManager$2
+      23: dup
+      24: aload_0
+      25: aload_1
+      26: invokespecial #200                // Method com/nothing/ketchum/GlyphManager$2."<init>":(Lcom/nothing/ketchum/GlyphManager;Lcom/nothing/ketchum/GlyphFrame;)V
+      29: astore_2
+      30: aload_0
+      31: aload_2
+      32: invokespecial #194                // Method executeFrame:(Ljava/lang/Runnable;)V
+      35: return
+
+  public void animate(com.nothing.ketchum.GlyphFrame);
+    Code:
+       0: aload_0
+       1: getfield      #45                 // Field mHasAuthorized:Z
+       4: ifne          16
+       7: ldc           #126                // String GlyphManager
+       9: ldc           #166                // String Non registed
+      11: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      14: pop
+      15: return
+      16: aload_0
+      17: invokespecial #179                // Method stopCurrentTask:()V
+      20: new           #203                // class com/nothing/ketchum/GlyphManager$3
+      23: dup
+      24: aload_0
+      25: aload_1
+      26: invokespecial #205                // Method com/nothing/ketchum/GlyphManager$3."<init>":(Lcom/nothing/ketchum/GlyphManager;Lcom/nothing/ketchum/GlyphFrame;)V
+      29: astore_2
+      30: aload_0
+      31: aload_2
+      32: invokespecial #194                // Method executeFrame:(Ljava/lang/Runnable;)V
+      35: return
+
+  public void displayProgressAndToggle(com.nothing.ketchum.GlyphFrame, int, boolean) throws com.nothing.ketchum.GlyphException;
+    Code:
+       0: aload_0
+       1: aload_1
+       2: iload_2
+       3: iload_3
+       4: iconst_1
+       5: invokespecial #206                // Method displayProgress:(Lcom/nothing/ketchum/GlyphFrame;IZZ)V
+       8: return
+
+  public void displayProgress(com.nothing.ketchum.GlyphFrame, int) throws com.nothing.ketchum.GlyphException;
+    Code:
+       0: aload_0
+       1: aload_1
+       2: iload_2
+       3: iconst_0
+       4: iconst_0
+       5: invokespecial #206                // Method displayProgress:(Lcom/nothing/ketchum/GlyphFrame;IZZ)V
+       8: return
+
+  public void displayProgress(com.nothing.ketchum.GlyphFrame, int, boolean) throws com.nothing.ketchum.GlyphException;
+    Code:
+       0: aload_0
+       1: aload_1
+       2: iload_2
+       3: iload_3
+       4: iconst_0
+       5: invokespecial #206                // Method displayProgress:(Lcom/nothing/ketchum/GlyphFrame;IZZ)V
+       8: return
+
+  private void displayProgress(com.nothing.ketchum.GlyphFrame, int, boolean, boolean) throws com.nothing.ketchum.GlyphException;
+    Code:
+       0: aload_0
+       1: getfield      #45                 // Field mHasAuthorized:Z
+       4: ifne          16
+       7: ldc           #126                // String GlyphManager
+       9: ldc           #166                // String Non registed
+      11: invokestatic  #168                // Method android/util/Log.d:(Ljava/lang/String;Ljava/lang/String;)I
+      14: pop
+      15: return
+      16: aload_0
+      17: invokespecial #179                // Method stopCurrentTask:()V
+      20: aload_1
+      21: invokevirtual #210                // Method com/nothing/ketchum/GlyphFrame.getChannel:()[I
+      24: astore        5
+      26: iconst_0
+      27: istore        6
+      29: aload_0
+      30: getfield      #15                 // Field mDevice:Ljava/lang/String;
+      33: invokestatic  #216                // Method com/nothing/ketchum/Common.isTargetDevice20111:(Ljava/lang/String;)Z
+      36: ifeq          61
+      39: aload         5
+      41: getstatic     #220                // Field com/nothing/ketchum/Glyph$Code_20111.D1_1:I
+      44: iaload
+      45: ifne          58
+      48: new           #171                // class com/nothing/ketchum/GlyphException
+      51: dup
+      52: ldc           #226                // String Please choose D1_1 while using display progress in 20111.
+      54: invokespecial #175                // Method com/nothing/ketchum/GlyphException."<init>":(Ljava/lang/String;)V
+      57: athrow
+      58: iconst_4
+      59: istore        6
+      61: aload_0
+      62: getfield      #15                 // Field mDevice:Ljava/lang/String;
+      65: invokestatic  #228                // Method com/nothing/ketchum/Common.isTargetDevice22111:(Ljava/lang/String;)Z
+      68: ifeq          133
+      71: aload         5
+      73: getstatic     #231                // Field com/nothing/ketchum/Glyph$Code_22111.C1_1:I
+      76: iaload
+      77: ifne          89
+      80: aload         5
+      82: getstatic     #236                // Field com/nothing/ketchum/Glyph$Code_22111.D1_1:I
+      85: iaload
+      86: ifeq          107
+      89: aload         5
+      91: getstatic     #231                // Field com/nothing/ketchum/Glyph$Code_22111.C1_1:I
+      94: iaload
+      95: ifle          117
+      98: aload         5
+     100: getstatic     #236                // Field com/nothing/ketchum/Glyph$Code_22111.D1_1:I
+     103: iaload
+     104: ifle          117
+     107: new           #171                // class com/nothing/ketchum/GlyphException
+     110: dup
+     111: ldc           #237                // String Please choose C1 or D1 while using display progress in 22111
+     113: invokespecial #175                // Method com/nothing/ketchum/GlyphException."<init>":(Ljava/lang/String;)V
+     116: athrow
+     117: aload         5
+     119: getstatic     #231                // Field com/nothing/ketchum/Glyph$Code_22111.C1_1:I
+     122: iaload
+     123: ifne          130
+     126: iconst_4
+     127: goto          131
+     130: iconst_3
+     131: istore        6
+     133: aload_0
+     134: getfield      #15                 // Field mDevice:Ljava/lang/String;
+     137: invokestatic  #239                // Method com/nothing/ketchum/Common.isTargetDevice23111:(Ljava/lang/String;)Z
+     140: ifeq          165
+     143: aload         5
+     145: getstatic     #242                // Field com/nothing/ketchum/Glyph$Code_23111.C_1:I
+     148: iaload
+     149: ifne          162
+     152: new           #171                // class com/nothing/ketchum/GlyphException
+     155: dup
+     156: ldc           #247                // String Please choose C_1 while using display progress in 23111.
+     158: invokespecial #175                // Method com/nothing/ketchum/GlyphException."<init>":(Ljava/lang/String;)V
+     161: athrow
+     162: iconst_3
+     163: istore        6
+     165: aload_0
+     166: getfield      #15                 // Field mDevice:Ljava/lang/String;
+     169: invokestatic  #249                // Method com/nothing/ketchum/Common.isTargetDevice24111:(Ljava/lang/String;)Z
+     172: ifeq          211
+     175: aload         5
+     177: getstatic     #252                // Field com/nothing/ketchum/Glyph$Code_24111.A_1:I
+     180: iaload
+     181: ifle          187
+     184: iconst_1
+     185: istore        6
+     187: aload         5
+     189: getstatic     #257                // Field com/nothing/ketchum/Glyph$Code_24111.B_1:I
+     192: iaload
+     193: ifle          199
+     196: iconst_2
+     197: istore        6
+     199: aload         5
+     201: getstatic     #260                // Field com/nothing/ketchum/Glyph$Code_24111.C_1:I
+     204: iaload
+     205: ifle          211
+     208: iconst_3
+     209: istore        6
+     211: aload_0
+     212: getfield      #15                 // Field mDevice:Ljava/lang/String;
+     215: invokestatic  #261                // Method com/nothing/ketchum/Common.isTargetDevice25111:(Ljava/lang/String;)Z
+     218: ifeq          244
+     221: aload         5
+     223: getstatic     #264                // Field com/nothing/ketchum/Glyph$Code_25111.A_1:I
+     226: iaload
+     227: ifne          241
+     230: new           #171                // class com/nothing/ketchum/GlyphException
+     233: dup
+     234: ldc_w         #267                // String Please choose A_1 while using display progress in 25111.
+     237: invokespecial #175                // Method com/nothing/ketchum/GlyphException."<init>":(Ljava/lang/String;)V
+     240: athrow
+     241: iconst_1
+     242: istore        6
+     244: aload_0
+     245: getfield      #15                 // Field mDevice:Ljava/lang/String;
+     248: invokestatic  #269                // Method com/nothing/ketchum/Common.isTargetDevice25131:(Ljava/lang/String;)Z
+     251: ifeq          277
+     254: aload         5
+     256: getstatic     #272                // Field com/nothing/ketchum/Glyph$Code_25131.A_1:I
+     259: iaload
+     260: ifne          274
+     263: new           #171                // class com/nothing/ketchum/GlyphException
+     266: dup
+     267: ldc_w         #275                // String Please choose A_1 while using display progress in 25131.
+     270: invokespecial #175                // Method com/nothing/ketchum/GlyphException."<init>":(Ljava/lang/String;)V
+     273: athrow
+     274: iconst_1
+     275: istore        6
+     277: iload         6
+     279: istore        7
+     281: new           #277                // class com/nothing/ketchum/GlyphManager$4
+     284: dup
+     285: aload_0
+     286: iload_3
+     287: iload         7
+     289: iload_2
+     290: iload         4
+     292: aload         5
+     294: invokespecial #279                // Method com/nothing/ketchum/GlyphManager$4."<init>":(Lcom/nothing/ketchum/GlyphManager;ZIIZ[I)V
+     297: astore        8
+     299: aload_0
+     300: aload         8
+     302: invokespecial #194                // Method executeFrame:(Ljava/lang/Runnable;)V
+     305: return
+
+  private void executeFrame(java.lang.Runnable);
+    Code:
+       0: aload_0
+       1: aload_0
+       2: getfield      #66                 // Field mExecutor:Ljava/util/concurrent/ExecutorService;
+       5: aload_1
+       6: invokeinterface #282,  2          // InterfaceMethod java/util/concurrent/ExecutorService.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;
+      11: putfield      #52                 // Field mTask:Ljava/util/concurrent/Future;
+      14: return
+
+  private boolean isTaskOn();
+    Code:
+       0: aload_0
+       1: getfield      #49                 // Field mFrameTask:Z
+       4: ireturn
+
+  private boolean hasLight(int);
+    Code:
+       0: iload_1
+       1: ifle          6
+       4: iconst_1
+       5: ireturn
+       6: iconst_0
+       7: ireturn
+
+  private void stopCurrentTask();
+    Code:
+       0: aload_0
+       1: getfield      #52                 // Field mTask:Ljava/util/concurrent/Future;
+       4: ifnull        18
+       7: aload_0
+       8: getfield      #52                 // Field mTask:Ljava/util/concurrent/Future;
+      11: iconst_1
+      12: invokeinterface #288,  2          // InterfaceMethod java/util/concurrent/Future.cancel:(Z)Z
+      17: pop
+      18: return
+
+  private void pauseAWhile(long);
+    Code:
+       0: lload_1
+       1: invokestatic  #294                // Method java/lang/Thread.sleep:(J)V
+       4: goto          18
+       7: astore_3
+       8: ldc           #126                // String GlyphManager
+      10: aload_3
+      11: invokevirtual #301                // Method java/lang/InterruptedException.getMessage:()Ljava/lang/String;
+      14: invokestatic  #132                // Method android/util/Log.e:(Ljava/lang/String;Ljava/lang/String;)I
+      17: pop
+      18: return
+    Exception table:
+       from    to  target type
+           0     4     7   Class java/lang/InterruptedException
+
+  static com.nothing.thirdparty.IGlyphService access$100(com.nothing.ketchum.GlyphManager);
+    Code:
+       0: aload_0
+       1: getfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+       4: areturn
+
+  static java.lang.String access$200(com.nothing.ketchum.GlyphManager);
+    Code:
+       0: aload_0
+       1: getfield      #15                 // Field mDevice:Ljava/lang/String;
+       4: areturn
+
+  static void access$300(com.nothing.ketchum.GlyphManager, long);
+    Code:
+       0: aload_0
+       1: lload_1
+       2: invokespecial #11                 // Method pauseAWhile:(J)V
+       5: return
+
+  static boolean access$400(com.nothing.ketchum.GlyphManager, int);
+    Code:
+       0: aload_0
+       1: iload_1
+       2: invokespecial #7                  // Method hasLight:(I)Z
+       5: ireturn
+
+  static com.nothing.thirdparty.IGlyphService access$102(com.nothing.ketchum.GlyphManager, com.nothing.thirdparty.IGlyphService);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: dup_x1
+       3: putfield      #19                 // Field mService:Lcom/nothing/thirdparty/IGlyphService;
+       6: areturn
+
+  static com.nothing.ketchum.GlyphManager$Callback access$500(com.nothing.ketchum.GlyphManager);
+    Code:
+       0: aload_0
+       1: getfield      #1                  // Field mCallback:Lcom/nothing/ketchum/GlyphManager$Callback;
+       4: areturn
+
+  static {};
+    Code:
+       0: aconst_null
+       1: putstatic     #23                 // Field mInstance:Lcom/nothing/ketchum/GlyphManager;
+       4: return
+}

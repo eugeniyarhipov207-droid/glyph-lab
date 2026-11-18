@@ -1,0 +1,21 @@
+{
+  "allFiles": [
+    {
+      "file": "/storage/emulated/0/CodeOnTheGoProjects/Glyph Lab/app/build.gradle.kts",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 5339,
+          "line": 151
+        },
+        "start": {
+          "column": 0,
+          "index": 0,
+          "line": 0
+        }
+      }
+    }
+  ],
+  "projectPath": "/storage/emulated/0/CodeOnTheGoProjects/Glyph Lab",
+  "selectedFile": "/storage/emulated/0/CodeOnTheGoProjects/Glyph Lab/app/build.gradle.kts"
+}
