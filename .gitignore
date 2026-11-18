@@ -1,6 +1,7 @@
 # Built application files
 *.apk
 *.aar
+!app/libs/glyph-matrix-sdk-2.0.aar
 *.ap_
 *.aab
 
